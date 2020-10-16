@@ -1,0 +1,17 @@
+version: '3.4'
+services:
+  ok-scoring-player-stats-service:
+    image: okeefem/ok-scoring-player-stats-service
+    container_name: ok-scoring-player-stats-service
+    build:
+        context: .
+        dockerfile: Ok-Scoring.Dockerfile
+        target: ok-scoring-player-stats-service
+    ports:
+      - 3001:3001
+      - 9229:9229
+      - 38625:38625
+    networks:
+      Ok-Scoring:
+networks:
+    Ok-Scoring:

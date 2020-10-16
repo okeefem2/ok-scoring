@@ -23,18 +23,36 @@
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "compile-schemas": "node ./tools/scripts/compile-schemas.js --"
   },
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "fastify": "^3.1.1",
+    "fastify-plugin": "^2.0.1",
+    "firebase-admin": "^9.0.0",
+    "pg": "^8.3.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25"
+  },
   "devDependencies": {
+    "@nrwl/eslint-plugin-nx": "9.5.1",
+    "@nrwl/jest": "9.5.1",
+    "@nrwl/node": "9.5.1",
     "@nrwl/workspace": "9.5.1",
+    "@types/jest": "25.1.4",
     "@types/node": "~8.9.4",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "@typescript-eslint/parser": "2.19.2",
     "dotenv": "6.2.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.0.0",
+    "jest": "25.2.3",
+    "json-schema-to-typescript": "^9.1.1",
+    "prettier": "2.0.4",
+    "ts-jest": "25.2.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
-    "eslint": "6.8.0",
-    "typescript": "~3.8.3",
-    "prettier": "2.0.4"
+    "typescript": "~3.8.3"
   }
 }

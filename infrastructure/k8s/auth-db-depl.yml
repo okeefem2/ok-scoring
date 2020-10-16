@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ok-scoring-auth-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ok-scoring-auth-db
+  template:
+    metadata:
+      labels:
+        app: ok-scoring-auth-db
+    spec:
+      containers:
+        - name: ok-scoring-auth-db
+          image: postgres
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ok-scoring-auth-db
+spec:
+  type: NodePort
+  selector:
+    app: ok-scoring-auth-db
+  ports:
+    - name: ok-scoring-auth-db
+      protocol: TCP
+      port: 5432 # Service port
+      targetPort: 5432 # Container port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ok-scoring-auth-db-internal
+spec:
+  type: ClusterIP # This is the default btw
+  selector:
+    app: ok-scoring-auth-db
+  ports:
+    - name: ok-scoring-auth-db
+      protocol: TCP
+      port: 5432 # Service port
+      targetPort: 5432 # Container port

@@ -1,8 +1,70 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "player-stats-service": {
+      "root": "apps/player-stats-service",
+      "sourceRoot": "apps/player-stats-service/src",
+      "projectType": "application",
+      "prefix": "player-stats-service",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/player-stats-service",
+            "main": "apps/player-stats-service/src/main.ts",
+            "tsConfig": "apps/player-stats-service/tsconfig.app.json",
+            "assets": [
+              "apps/player-stats-service/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/player-stats-service/src/environments/environment.ts",
+                  "with": "apps/player-stats-service/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "player-stats-service:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "apps/player-stats-service/tsconfig.app.json",
+              "apps/player-stats-service/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/player-stats-service/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/player-stats-service/jest.config.js",
+            "tsConfig": "apps/player-stats-service/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/node"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -62,5 +124,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "player-stats-service"
 }

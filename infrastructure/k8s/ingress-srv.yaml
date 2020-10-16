@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ok-scoring-ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: ok-scoring.io
+      http:
+        paths:
+          - path: /auth-service
+            backend:
+              serviceName: ok-scoring-auth-service-internal
+              servicePort: 3000

@@ -1,90 +1,63 @@
-# OkScoringWeb
+# Ok Scoring web mono repo
 
-This project was generated using [Nx](https://nx.dev).
+## Creating a fastify ts backend with nx
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+nx generate @nrwl/node:app myapp
+npm install fastify-cli --global
+npm i fastify --save
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+``` json
+{
+  "name": "ticket-auth-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap test/**/*.test.ts",
+    "start": "npm run build:ts && fastify start -l info dist/app.js",
+    "build:ts": "tsc",
+    "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\"  \"tsc -w\" \"fastify start -w -l info -P dist/app.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.0.0",
+    "fastify-plugin": "^2.0.0",
+    "fastify-autoload": "^3.0.2",
+    "fastify-cli": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.18",
+    "concurrently": "^5.1.0",
+    "tap": "^14.0.0",
+    "typescript": "^3.9.6"
+  }
+}
+```
 
-## Adding capabilities to your workspace
+typeorm and pg
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+```
+npm install typeorm pg reflect-metadata --save
+```
+docker run -d --name ok-scoring -p 5432:5432 -e POSTGRES_PASSWORD=ok-scoring-dev postgres:11.5
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+docker exec -it ok-scoring psql -U postgres -c "create database ok-scoring"
+Using 11.5 because 12 has a bug with typeorm :(
 
-Below are our core plugins:
+User will have game stats
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+game stats will have
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+https://dev.to/carlbarrdahl/building-a-rest-api-using-fastify-and-typeorm-39bp
 
-## Generate an application
+going to build out the following services
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are sharable across libraries and applications. They can be imported from `@ok-scoring-web/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+players
+games
+stats
+game-templates
