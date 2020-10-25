@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
-import { Settings } from '../types/game-state-body';
+import { Settings } from '../../@types/game-state-body';
 
 @Entity()
 export class SettingsEntity implements Settings {

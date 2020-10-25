@@ -1,13 +1,22 @@
 // src/plugins/db.ts
 import 'reflect-metadata'
 import fp from 'fastify-plugin'
-import { createConnection, getConnectionOptions } from 'typeorm'
+import { createConnection, getConnectionOptions, Repository } from 'typeorm'
 import { GameStateEntity } from '../entities/game';
 import { PlayerGameEntity } from '../entities/player-game';
 import { PlayerEntity } from '../entities/player';
 import { SettingsEntity } from '../entities/settings';
+import { FastifyInstance } from 'fastify';
+import gameService from './services/game.service';
 
-const dbConnector = fp(async server => {
+export interface OkScoringDB {
+    gameRepo: Repository<GameStateEntity>,
+    playerRepo: Repository<PlayerEntity>,
+    playerGameRepo: Repository<PlayerGameEntity>,
+    settingsRepo: Repository<SettingsEntity>,
+}
+
+const dbConnector = fp(async (fastify: FastifyInstance, opts, done) => {
     console.log('Connecting to DB!');
     try {
         // getConnectionOptions will read from ormconfig.js (or .env if that is prefered)
@@ -23,17 +32,23 @@ const dbConnector = fp(async server => {
             ]
         })
         const connection = await createConnection(connectionOptions)
+        console.log('Connection established');
+
+        const db: OkScoringDB = {
+            gameRepo: connection.getRepository(GameStateEntity),
+            playerRepo: connection.getRepository(PlayerEntity),
+            playerGameRepo: connection.getRepository(PlayerGameEntity),
+            settingsRepo: connection.getRepository(SettingsEntity),
+        };
 
         // this object will be accessible from any fastify server instance
-        server.decorate('db', {
-            game: connection.getRepository(GameStateEntity),
-            player: connection.getRepository(PlayerEntity),
-            playerGame: connection.getRepository(PlayerGameEntity),
-            settings: connection.getRepository(SettingsEntity),
-        })
+        fastify.decorate('db', db);
+        // fastify.register(gameService);
+
     } catch (error) {
-        console.log(error)
+        console.log('Error creating db', error)
     }
+    done();
 })
 
 export default dbConnector;

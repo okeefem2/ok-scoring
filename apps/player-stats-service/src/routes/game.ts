@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyRequest, RouteShorthandOptions, HookHandlerDone
  // import json schemas as normal
 import GameStateBodySchema from '../schemas/game-state-body.json';
 // import the generated interfaces
-import { GameStateBodySchema as GameStateBodySchemaInterface } from '../types/game-state-body';
+import { GameStateBodySchema as GameStateBodySchemaInterface } from '../../@types/game-state-body';
 import * as Ajv from 'ajv';
 import * as AjvErrors from 'ajv-errors';
 const ajv = new Ajv({allErrors: true, jsonPointers: true});
@@ -28,8 +28,15 @@ export default async function (fastify: FastifyInstance, opts: any) {
         preValidation: preValidatePost
     }
     fastify.post<GameStatePostRequest>('/', gameStatePostOpts, async function (request, reply) {
-        const gameState = request.body;
-        console.log(gameState);
-        return `Adding ${gameState.key}`;
+        try {
+            const { gameRepo } = fastify.db;
+            const gameState = request.body;
+            await gameRepo.insert(gameState);
+            reply.status(201);
+        } catch (e) {
+            console.error('Error saving game state', e);
+            reply.status(500);
+        }
+
     });
 }

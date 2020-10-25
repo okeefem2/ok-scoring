@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, OneToMany, OneToOne } from 'typeorm';
 
-import { GameStateBodySchema as GameStateInterface, Player, PlayerScoreHistory, Settings } from '../types/game-state-body';
+import { GameStateBodySchema as GameStateInterface, Player, PlayerScoreHistory, Settings } from '../../@types/game-state-body';
 
 @Entity()
 export class GameStateEntity implements GameStateInterface {

@@ -2,16 +2,23 @@
 import fastify from 'fastify'
 import dbConnector from './plugins/db-connector'
 import gameRoutes from './routes/game'
-const server = fastify({
-    logger: true
-})
 
-const apiBase = 'api/player-stats';
+function createServer() {
+    const server = fastify({
+        logger: true
+    })
 
-server.register(dbConnector);
-server.register(gameRoutes, { prefix: `${apiBase}/game` });
+    const apiBase = 'api/player-stats';
 
-// Run the server!
+    server.register(dbConnector);
+    server.register(gameRoutes, { prefix: `${apiBase}/game` });
+
+    // Run the server!
+    return server;
+}
+
+const server = createServer();
+
 server.listen(3001, function (err, address) {
     if (err) {
         server.log.error(err);
