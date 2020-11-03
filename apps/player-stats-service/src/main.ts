@@ -1,7 +1,7 @@
 // Require the framework and instantiate it
 import fastify from 'fastify'
 import dbConnector from './plugins/db-connector'
-import gameRoutes from './routes/game'
+import gameRoutes from './routes/game/game-routes'
 
 function createServer() {
     const server = fastify({

@@ -7,7 +7,6 @@ import { PlayerGameEntity } from '../entities/player-game';
 import { PlayerEntity } from '../entities/player';
 import { SettingsEntity } from '../entities/settings';
 import { FastifyInstance } from 'fastify';
-import gameService from './services/game.service';
 
 export interface OkScoringDB {
     gameRepo: Repository<GameStateEntity>,
