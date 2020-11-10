@@ -1,0 +1,1 @@
+describe('<%= classify(name)%> Functions', () => {});
